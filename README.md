@@ -8,5 +8,6 @@ All configurations of the Web-to-Image converter tool is done through a config.j
 * "websites" - An array of websites. Each website containing the following properties.
   * "image_name" - Name of the image when save.
   * "url" - URL to the website for each the screenshot shall be taken.
+  * "selector" - Used to provide a HTML selector, which the tool will focus and resize the screenshot according to. 
   * "username" - Username for authorization on the website if necessary. Left empty "" by default.
   * "username" - Password for authorization on the website if necessary. Left empty "" by default.
