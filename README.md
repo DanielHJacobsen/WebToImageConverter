@@ -11,3 +11,8 @@ All configurations of the Web-to-Image converter tool is done through a config.j
   * "selector" - Used to provide a HTML selector, which the tool will focus and resize the screenshot according to. 
   * "username" - Username for authorization on the website if necessary. Left empty "" by default.
   * "username" - Password for authorization on the website if necessary. Left empty "" by default.
+
+## Contact ##
+* Author: Daniel Høyer Bjørnskov
+* Mail: daniel.h.bjornskov@gmail.com
+* Website: www.integu.net
