@@ -4,7 +4,9 @@ The Web-to-Image converter uses the config.json file to visit a website (with or
 ## Configuration ##
 
 All configurations of the Web-to-Image converter tool is done through a config.json file in the same location as the tool script.
-* "image_directory" - Directory for where to save the screenshots. It should be noted that the script does not create the directory if the path-location is not available. 
+* "image_directory" - Directory for where to save the screenshots. It should be noted that the script does not create the directory if the path-location is not available.
+* "time_per_slide" - The time paused on each slide.
+* "refresh_interval" - The number of rotations which the slide show will continue before refreshing all the images collected.
 * "websites" - An array of websites. Each website containing the following properties.
   * "image_name" - Name of the image when save.
   * "url" - URL to the website for each the screenshot shall be taken.
