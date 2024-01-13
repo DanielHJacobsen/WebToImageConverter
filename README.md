@@ -1,12 +1,4 @@
 # Web-to-Image Converter #
-
- __      __      ___.           ___________              .___                               
-/  \    /  \ ____\_ |__         \__    ___/___           |   | _____ _____     ____   ____  
-\   \/\/   // __ \| __ \   ______ |    | /  _ \   ______ |   |/     \\__  \   / ___\_/ __ \ 
- \        /\  ___/| \_\ \ /_____/ |    |(  <_> ) /_____/ |   |  Y Y  \/ __ \_/ /_/  >  ___/ 
-  \__/\  /  \___  >___  /         |____| \____/          |___|__|_|  (____  /\___  / \___  >
-       \/       \/    \/                                           \/     \//_____/      \/
-
 The Web-to-Image converter uses the config.json file to visit a website (with or with authorization), take a screenshot and save the screenshot in the defined location (see the 'image_directory'-property).
 
 ## Configuration ##
