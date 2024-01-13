@@ -12,8 +12,8 @@ All configurations of the Web-to-Image converter tool is done through a config.j
   * **"url"** - URL to the website for each the screenshot shall be taken.
   * **"selector"** - Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
   * **"scroll_to_selector"** - If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.
-  * **"username"** - Username for authorization on the website if necessary. Left empty "" by default.
-  * **"password"** - Password for authorization on the website if necessary. Left empty "" by default.
+  * **"username"** - Username for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
+  * **"password"** - Password for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
 
 ## Contact ##
 * Author: Daniel Høyer Bjørnskov
