@@ -19,3 +19,6 @@ All configurations of the Web-to-Image converter tool is done through a config.j
 * Author: Daniel Høyer Bjørnskov
 * Mail: daniel.h.bjornskov@gmail.com
 * Website: www.integu.net
+
+## Preview ##
+![]()
