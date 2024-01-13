@@ -21,5 +21,5 @@ All configurations of the Web-to-Image converter tool is done through a config.j
 * Website: www.integu.net
 
 ## Preview ##
-*(images from google and personal blog)*
+*(Images from google and personal blog)*
 ![](https://github.com/DanielHJacobsen/WebToImageConverter/blob/master/resources/Preview.gif)
