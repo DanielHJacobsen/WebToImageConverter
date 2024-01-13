@@ -107,7 +107,7 @@ class Main:
     @staticmethod
     def delete_old_files(location):
         for filename in os.listdir(location):
-            if os.path.isfile(os.path.join(location, filename)):
+            if os.path.isfile(os.path.join(location, filename)) and filename.endswith(".png"):
                 os.remove(os.path.join(location, filename))
 
 
