@@ -21,6 +21,11 @@
       "url": "https://integu.net/unit-testing/",
       "selector": "[data-id='b004b22']",
       "scroll_to_selector": true
+    },
+    {
+      "image_name": "Unit_test_article_selector_only",
+      "url": "https://integu.net/unit-testing/",
+      "selector": "[data-id='b004b22']"
     }
   ]
 }
