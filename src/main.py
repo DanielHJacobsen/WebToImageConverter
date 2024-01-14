@@ -7,19 +7,23 @@ import json
 import os
 import time
 from IntroPrint import IntroPrint
+from CaptionHandler import CaptionHandler
+from JsonExtraction import JsonExtraction
 
 from selenium.webdriver.support.wait import WebDriverWait
 
 
 class Main:
     is_first_run = True
+    captionHandler = CaptionHandler()
+    jsonExt = JsonExtraction()
 
     def start(self):
         IntroPrint().print_ascii_art()
 
         config = self.load_config_file()
 
-        location = self.extract_value_from_json_with_failure(config, "image_directory", "config")
+        location = self.jsonExt.extract_with_failure(config, "image_directory", "config")
 
         self.delete_old_files(location)
 
@@ -47,13 +51,13 @@ class Main:
         self.start_screenshot_collection_and_slideshow(config, driver, location)
 
     def run_slide_show(self, config, driver, location):
-        refresh_interval = self.extract_value_from_json(config, "refresh_interval", 5, "refresh_interval")
+        refresh_interval = self.jsonExt.extract(config, "refresh_interval", 5, "refresh_interval", self.is_first_run)
 
         for x in range(refresh_interval):
             self.loop_slide_show(config, driver, location)
 
     def loop_slide_show(self, config, driver, location):
-        time_per_slide = self.extract_value_from_json(config, "time_per_slide", 5, "config")
+        time_per_slide = self.jsonExt.extract(config, "time_per_slide", 5, "config", self.is_first_run)
 
         for site in config["websites"]:
             image_name_with_format = site["image_name"] + ".png"
@@ -61,48 +65,34 @@ class Main:
             time.sleep(time_per_slide)
 
     def collect_screenshots(self, config, driver, location):
-        websites = self.extract_value_from_json_with_failure(config, "websites", "config")
+        websites = self.jsonExt.extract_with_failure(config, "websites", "config")
         for site in websites:
-            image_name = self.extract_value_from_json_with_failure(site, "image_name", "websites")
+            image_name = self.jsonExt.extract_with_failure(site, "image_name", "websites")
             image_name_with_format = image_name + ".png"
 
-            site_url = self.extract_value_from_json_with_failure(site, "url", image_name)
+            site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
             driver.get(site_url)
-            selector = self.extract_value_from_json(site, "selector", "", image_name)
+            selector = self.jsonExt.extract(site, "selector", "", image_name, self.is_first_run)
 
-            is_scroll_to_selector = self.extract_value_from_json(site, "scroll_to_selector", False, image_name)
+            is_scroll_to_selector = self.jsonExt.extract(site, "scroll_to_selector", False, image_name, self.is_first_run)
 
+            image_path = location + "/" + image_name_with_format
             if selector != "" and not is_scroll_to_selector:
                 WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
                 element = driver.find_element(By.CSS_SELECTOR, selector)
-                element.screenshot(location + "/" + image_name_with_format)
+                element.screenshot(image_path)
 
             elif selector != "" and is_scroll_to_selector:
                 WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
                 selector.replace("\"", "'")
                 script = 'window.scroll(0,document.querySelector("' + selector + '").getBoundingClientRect().y)'
                 driver.execute_script(script)
-                driver.save_screenshot(location + "/" + image_name_with_format)
+                driver.save_screenshot(image_path)
 
             else:
-                driver.save_screenshot(location + "/" + image_name_with_format)
+                driver.save_screenshot(image_path)
 
-    def extract_value_from_json(self, json_object, key, default_value, object_reference):
-        is_scroll_to_selector = default_value
-        try:
-            is_scroll_to_selector = json_object[key]
-        except KeyError:
-            if self.is_first_run:
-                print('There is no ' + key + '-property for the "' + object_reference + '"-object.')
-        return is_scroll_to_selector
-
-    @staticmethod
-    def extract_value_from_json_with_failure(json_object, key, object_reference):
-        try:
-            return json_object[key]
-        except KeyError:
-            print('The required key of ' + key + ' is missing for the "' + object_reference + '"-object.')
-            sys.exit()
+            self.captionHandler.add_caption_to_image(site, image_path, self.is_first_run)
 
     @staticmethod
     def delete_old_files(location):

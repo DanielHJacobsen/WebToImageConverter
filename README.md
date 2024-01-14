@@ -12,6 +12,11 @@ All configurations of the Web-to-Image converter tool is done through a config.j
   * **"url"** - URL to the website for each the screenshot shall be taken.
   * **"selector"** - Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
   * **"scroll_to_selector"** - If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.
+  * **"caption"** - Caption can be used to add a text message to the screenshot.
+  * **"caption_x"** - Sets the x-axis position of the captions on the screenshot. Requires the "caption"-property to be set.
+  * **"caption_y"** - Sets the y-axis position of the captions on the screenshot. Requires the "caption"-property to be set.
+  * **"caption_color"** - Sets the font color of the captions on the screenshot. Requires the "caption"-property to be set.
+  * **"caption_size"** - Sets the font size of the captions on the screenshot. Requires the "caption"-property to be set.
   * **"username"** - Username for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
   * **"password"** - Password for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
 
