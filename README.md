@@ -10,16 +10,18 @@ All configurations of the Web-to-Image converter tool is done through a config.j
 * **"websites"** - An array of websites. Each website containing the following properties.
   * **"image_name"** - Name of the image when save.
   * **"url"** - URL to the website for each the screenshot shall be taken.
-  * **"selector"** - Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
-  * **"scroll_to_selector"** - If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.
-  * **"caption"** - Caption can be used to add a text message to the screenshot.
-  * **"caption_x"** - Sets the x-axis position of the captions on the screenshot. Requires the "caption"-property to be set.
-  * **"caption_y"** - Sets the y-axis position of the captions on the screenshot. Requires the "caption"-property to be set.
-  * **"caption_color"** - Sets the font color of the captions on the screenshot. Requires the "caption"-property to be set.
-  * **"caption_size"** - Sets the font size of the captions on the screenshot. Requires the "caption"-property to be set.
+  * **"selector"** - [Navigation ↗] Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
+  * **"scroll_to_selector"** - [Navigation ↗] If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.
+  * **"clicks"** - [Navigation ↗] Sets an array of CSS selectors, which will be clicked before taking the screenshot.*
+  * **"caption"** - [Caption 🆎] Caption can be used to add a text message to the screenshot.
+  * **"caption_x"** - [Caption 🆎] Sets the x-axis position of the captions on the screenshot. Requires the "caption"-property to be set.
+  * **"caption_y"** - [Caption 🆎] Sets the y-axis position of the captions on the screenshot. Requires the "caption"-property to be set.
+  * **"caption_color"** - [Caption 🆎] Sets the font color of the captions on the screenshot. Requires the "caption"-property to be set.
+  * **"caption_size"** - [Caption 🆎] Sets the font size of the captions on the screenshot. Requires the "caption"-property to be set.
   * **"username"** - Username for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
   * **"password"** - Password for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
 
+Navigation-configuration: Any website-configuration marked with "Navigation", cannot be used together with any other "Navigation"-marked configuration (unless explicitly specified).
 ## Contact ##
 * Author: Daniel Høyer Bjørnskov
 * Mail: daniel.h.bjornskov@gmail.com
