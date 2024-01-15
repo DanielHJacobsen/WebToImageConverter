@@ -1,7 +1,7 @@
 {
   "image_directory": "C:\\Users\\daja\\PycharmProjects\\WebToImageConverter\\image_directory",
   "time_per_slide": 10,
-  "refresh_interval": 5,
+  "refresh_interval": 10,
   "websites": [
     {
       "image_name": "Pipeline",
