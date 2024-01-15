@@ -21,7 +21,7 @@ All configurations of the Web-to-Image converter tool is done through a config.j
   * **"username"** - Username for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
   * **"password"** - Password for authorization on the website if necessary. Left empty "" by default. (Not yet implemented)
 
-Navigation-configuration: Any website-configuration marked with "Navigation", cannot be used together with any other "Navigation"-marked configuration (unless explicitly specified).
+[Navigation🔄]-configuration: Any website-configuration marked with "Navigation", cannot be used together with any other "Navigation"-marked configuration (unless explicitly specified).
 ## Contact ##
 * Author: Daniel Høyer Bjørnskov
 * Mail: daniel.h.bjornskov@gmail.com
