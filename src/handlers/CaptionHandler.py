@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
-from JsonExtraction import JsonExtraction
+from ..util.JsonExtraction import JsonExtraction
 
 
 class CaptionHandler:

@@ -1,21 +1,19 @@
 import sys
 
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import presence_of_element_located
 import json
 import os
 import time
-from IntroPrint import IntroPrint
-from CaptionHandler import CaptionHandler
-from JsonExtraction import JsonExtraction
-
-from selenium.webdriver.support.wait import WebDriverWait
+from src.util.IntroUtil import IntroPrint
+from src.handlers.CaptionHandler import CaptionHandler
+from src.handlers.NavigationHandler import NavigationHandler
+from src.util.JsonExtraction import JsonExtraction
 
 
 class Main:
     is_first_run = True
     captionHandler = CaptionHandler()
+    navigationHandler = NavigationHandler()
     jsonExt = JsonExtraction()
 
     def start(self):
@@ -53,7 +51,7 @@ class Main:
     def run_slide_show(self, config, driver, location):
         refresh_interval = self.jsonExt.extract(config, "refresh_interval", 5, "refresh_interval", self.is_first_run)
 
-        for x in range(refresh_interval):
+        for interation in range(refresh_interval):
             self.loop_slide_show(config, driver, location)
 
     def loop_slide_show(self, config, driver, location):
@@ -72,37 +70,9 @@ class Main:
 
             site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
             driver.get(site_url)
-            selector = self.jsonExt.extract(site, "selector", "", image_name, self.is_first_run)
-
-            is_scroll_to_selector = self.jsonExt.extract(site, "scroll_to_selector", False, image_name, self.is_first_run)
-
-            clicks = self.jsonExt.extract(site, "clicks", [], image_name, self.is_first_run)
-
             image_path = location + "/" + image_name_with_format
-            if selector != "" and not is_scroll_to_selector:
-                WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
-                element = driver.find_element(By.CSS_SELECTOR, selector)
-                element.screenshot(image_path)
 
-            elif selector != "" and is_scroll_to_selector:
-                WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
-                selector.replace("\"", "'")
-                script = 'window.scroll(0,document.querySelector("' + selector + '").getBoundingClientRect().y)'
-                driver.execute_script(script)
-                driver.save_screenshot(image_path)
-
-            elif clicks:
-                for click_selector in clicks:
-                    print(click_selector)
-                    WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, click_selector)))
-                    element = driver.find_element(By.CSS_SELECTOR, click_selector)
-                    element.click()
-
-                time.sleep(2)
-                driver.save_screenshot(image_path)
-
-            else:
-                driver.save_screenshot(image_path)
+            self.navigationHandler.navigate_for_screenshot(driver, image_name, image_path, site, self.is_first_run)
 
             self.captionHandler.add_caption_to_image(site, image_path, self.is_first_run)
 
