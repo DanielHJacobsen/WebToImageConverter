@@ -1,8 +1,9 @@
 from ..util.JsonExtraction import JsonExtraction as jsonExt
+from ..util.ClickUtil import ClickUtil
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.common.by import By
-
+import time
 
 class LoginHandler:
 
@@ -18,13 +19,19 @@ class LoginHandler:
         password = jsonExt.extract(credentials, "password", "", image_name, is_first_run)
         password_selector = jsonExt.extract(credentials, "password_selector", "", image_name, is_first_run)
 
-        LoginHandler.send_keys_to_element(driver, input=username, selector=username_selector)
-        LoginHandler.send_keys_to_element(driver, input=password, selector=password_selector)
+        submit_selector = jsonExt.extract(credentials, "submit_selector", "", image_name, is_first_run)
+
+        LoginHandler.send_keys_to_element(driver, input_value=username, selector=username_selector)
+        LoginHandler.send_keys_to_element(driver, input_value=password, selector=password_selector)
+
+        ClickUtil.click_element(submit_selector, driver)
+
+        time.sleep(2)
 
     @staticmethod
-    def send_keys_to_element(driver, input, selector):
-        WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, username_selector)))
-        username_element = driver.find_element(By.CSS_SELECTOR, username_selector)
-        username_element.send_keys(username)
+    def send_keys_to_element(driver, input_value, selector):
+        WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
+        element = driver.find_element(By.CSS_SELECTOR, selector)
+        element.send_keys(input_value)
 
 

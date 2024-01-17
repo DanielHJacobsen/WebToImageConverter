@@ -7,6 +7,7 @@ import time
 from src.util.IntroUtil import IntroPrint
 from src.handlers.CaptionHandler import CaptionHandler
 from src.handlers.NavigationHandler import NavigationHandler
+from src.handlers.LoginHandler import LoginHandler
 from src.util.JsonExtraction import JsonExtraction
 
 
@@ -14,6 +15,7 @@ class Main:
     is_first_run = True
     captionHandler = CaptionHandler()
     navigationHandler = NavigationHandler()
+    loginHandler = LoginHandler()
     jsonExt = JsonExtraction()
 
     def start(self):
@@ -71,6 +73,8 @@ class Main:
             site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
             driver.get(site_url)
             image_path = location + "/" + image_name_with_format
+
+            self.loginHandler.login(driver=driver, site=site, image_name=image_name, is_first_run=self.is_first_run)
 
             self.navigationHandler.navigate_for_screenshot(driver, image_name, image_path, site, self.is_first_run)
 

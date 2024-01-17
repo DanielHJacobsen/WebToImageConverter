@@ -1,8 +1,10 @@
 import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from ..util.JsonExtraction import JsonExtraction as jsonExt
 from selenium.webdriver.support.wait import WebDriverWait
+from ..util.ClickUtil import ClickUtil
 
 
 class NavigationHandler:
@@ -26,10 +28,7 @@ class NavigationHandler:
 
         elif clicks:
             for click_selector in clicks:
-                print(click_selector)
-                WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, click_selector)))
-                element = driver.find_element(By.CSS_SELECTOR, click_selector)
-                element.click()
+                ClickUtil.click_element(click_selector, driver)
 
             time.sleep(2)
             driver.save_screenshot(image_path)
