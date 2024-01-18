@@ -5,24 +5,25 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from selenium.webdriver.common.by import By
 import time
 
+
 class LoginHandler:
 
     @staticmethod
-    def login(driver, site, image_name, is_first_run):
-        credentials = jsonExt.extract(site, "credentials", "", image_name, is_first_run)
+    def login(driver, site, image_name, is_with_log):
+        credentials = jsonExt.extract(site, "credentials", "", image_name, is_with_log)
         if credentials == "":
             return
 
-        username = jsonExt.extract(credentials, "username", "", image_name, is_first_run)
-        username_selector = jsonExt.extract(credentials, "username_selector", "", image_name, is_first_run)
+        username = jsonExt.extract(credentials, "username", "", image_name, is_with_log)
+        username_selector = jsonExt.extract(credentials, "username_selector", "", image_name, is_with_log)
 
-        password = jsonExt.extract(credentials, "password", "", image_name, is_first_run)
-        password_selector = jsonExt.extract(credentials, "password_selector", "", image_name, is_first_run)
+        password = jsonExt.extract(credentials, "password", "", image_name, is_with_log)
+        password_selector = jsonExt.extract(credentials, "password_selector", "", image_name, is_with_log)
 
-        submit_selector = jsonExt.extract(credentials, "submit_selector", "", image_name, is_first_run)
+        submit_selector = jsonExt.extract(credentials, "submit_selector", "", image_name, is_with_log)
 
-        LoginHandler.send_keys_to_element(driver, input_value=username, selector=username_selector)
-        LoginHandler.send_keys_to_element(driver, input_value=password, selector=password_selector)
+        LoginHandler.send_keys_to_element(driver=driver, input_value=username, selector=username_selector)
+        LoginHandler.send_keys_to_element(driver=driver, input_value=password, selector=password_selector)
 
         ClickUtil.click_element(submit_selector, driver)
 

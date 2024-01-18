@@ -10,10 +10,10 @@ from ..util.ClickUtil import ClickUtil
 class NavigationHandler:
 
     @staticmethod
-    def navigate_for_screenshot(driver, image_name, image_path, site, is_first_run):
-        selector = jsonExt.extract(site, "selector", "", image_name, is_first_run)
-        is_scroll_to_selector = jsonExt.extract(site, "scroll_to_selector", False, image_name, is_first_run)
-        clicks = jsonExt.extract(site, "clicks", [], image_name, is_first_run)
+    def navigate(driver, image_name, image_path, site, is_with_log):
+        selector = jsonExt.extract(site, "selector", "", image_name, is_with_log)
+        is_scroll_to_selector = jsonExt.extract(site, "scroll_to_selector", False, image_name, is_with_log)
+        clicks = jsonExt.extract(site, "clicks", [], image_name, is_with_log)
         if selector != "" and not is_scroll_to_selector:
             WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
             element = driver.find_element(By.CSS_SELECTOR, selector)

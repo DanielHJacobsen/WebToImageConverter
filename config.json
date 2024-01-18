@@ -18,11 +18,23 @@
     {
       "image_name": "Pipeline_caption",
       "url": "https://www.jetbrains.com/teamcity/img/screenshots/projects-overview.png",
-      "caption": "The pipeline should always be GREEN. \nIf a build configuration is RED, it needs to be investigated.",
-      "caption_x": 700,
-      "caption_y": 180,
-      "caption_color": "#4287f5",
-      "caption_size": 40
+      "captions": [
+        {
+          "caption_text": "The pipeline should always be GREEN. \nIf a build configuration is RED, it needs to be investigated.",
+          "caption_x": 700,
+          "caption_y": 180,
+          "caption_color": "#4287f5",
+          "caption_size": 40
+        },
+        {
+          "caption_text": "<< Error",
+          "caption_x": 900,
+          "caption_y": 500,
+          "caption_color": "red",
+          "caption_size": 80
+        }
+      ]
+
     },
     {
       "image_name": "Burndown_basic",

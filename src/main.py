@@ -1,6 +1,7 @@
 import sys
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchWindowException
 import json
 import os
 import time
@@ -9,6 +10,7 @@ from src.handlers.CaptionHandler import CaptionHandler
 from src.handlers.NavigationHandler import NavigationHandler
 from src.handlers.LoginHandler import LoginHandler
 from src.util.JsonExtraction import JsonExtraction
+
 
 
 class Main:
@@ -61,24 +63,41 @@ class Main:
 
         for site in config["websites"]:
             image_name_with_format = site["image_name"] + ".png"
-            driver.get(location + "/" + image_name_with_format)
+            try:
+                driver.get(location + "/" + image_name_with_format)
+            except NoSuchWindowException as e:
+                print(e.msg)
+                print("Was the program terminated manually?")
+                sys.exit()
+
             time.sleep(time_per_slide)
 
     def collect_screenshots(self, config, driver, location):
         websites = self.jsonExt.extract_with_failure(config, "websites", "config")
         for site in websites:
-            image_name = self.jsonExt.extract_with_failure(site, "image_name", "websites")
-            image_name_with_format = image_name + ".png"
+            self.collect_snapshot(driver, location, site)
 
-            site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
-            driver.get(site_url)
-            image_path = location + "/" + image_name_with_format
+    def collect_snapshot(self, driver, location, site):
+        image_name = self.jsonExt.extract_with_failure(site, "image_name", "websites")
+        image_name_with_format = image_name + ".png"
+        site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
+        driver.get(site_url)
+        image_path = location + "/" + image_name_with_format
 
-            self.loginHandler.login(driver=driver, site=site, image_name=image_name, is_first_run=self.is_first_run)
+        self.loginHandler.login(driver=driver,
+                                site=site,
+                                image_name=image_name,
+                                is_with_log=self.is_first_run)
 
-            self.navigationHandler.navigate_for_screenshot(driver, image_name, image_path, site, self.is_first_run)
+        self.navigationHandler.navigate(driver=driver,
+                                        site=site,
+                                        image_name=image_name,
+                                        image_path=image_path,
+                                        is_with_log=self.is_first_run)
 
-            self.captionHandler.add_caption_to_image(site, image_path, self.is_first_run)
+        self.captionHandler.add_caption(site=site,
+                                        image_path=image_path,
+                                        is_with_log=self.is_first_run)
 
     @staticmethod
     def delete_old_files(location):
