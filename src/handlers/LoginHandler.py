@@ -1,3 +1,4 @@
+from ..util.Config import Config
 from ..util.JsonExtraction import JsonExtraction as jsonExt
 from ..util.ClickUtil import ClickUtil
 from selenium.webdriver.support.wait import WebDriverWait
@@ -31,7 +32,7 @@ class LoginHandler:
 
     @staticmethod
     def send_keys_to_element(driver, input_value, selector):
-        WebDriverWait(driver, 5).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
+        WebDriverWait(driver, Config().timeout).until(presence_of_element_located((By.CSS_SELECTOR, selector)))
         element = driver.find_element(By.CSS_SELECTOR, selector)
         element.send_keys(input_value)
 
