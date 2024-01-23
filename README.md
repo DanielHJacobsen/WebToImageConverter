@@ -1,5 +1,5 @@
 # Web-to-Image Converter #
-The Web-to-Image converter uses the config.json file to visit a website (with or with authorization), take a screenshot and save the screenshot in the defined location (see the 'image_directory'-property).
+The Web-to-Image converter uses the config.json file to visit a website, navigates to a defined location, takes a screenshot and save the screenshot in the defined location.
 
 ## Configuration ##
 
