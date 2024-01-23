@@ -9,7 +9,8 @@ All configurations of the Web-to-Image converter tool is done through a config.j
 * **"refresh_interval"** - The number of rotations which the slide show will continue before refreshing all the images collected. (default 5)
 * **"allowed_timeout"** - The allowed time delay for a CSS selector to wait until the application will fail due to missing selector. (default 5 sec)
 * **"websites"** - An array of websites. Each website containing the following properties.
-  * **"image_name"** - Name of the image when save.
+  * **"image_name"** - [String] Name of the image when save.
+  * **"skip_if_failed"** - [Boolean] A boolean property, which configured if the program shall terminate if the image cannot be found. (default set to "true")
   * **"url"** - URL to the website for each the screenshot shall be taken.
   * **"selector"** - [Navigation 🔄] Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
   * **"scroll_to_selector"** - [Navigation 🔄] If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.

@@ -74,13 +74,41 @@ class Main:
         for site in config["websites"]:
             image_name_with_format = site["image_name"] + ".png"
             try:
-                driver.get(self.config.location + "/" + image_name_with_format)
+                path = self.config.location + "/" + image_name_with_format
+                file_exits = os.path.exists(path)
+
+                if file_exits:
+                    self.handle_existing_image(driver, path)
+                else:
+                    self.handle_missing_image(path, site)
+
             except NoSuchWindowException as e:
                 print(e.msg)
                 print("Was the program terminated manually? - If so, don't worry about this log.")
                 sys.exit()
 
+    def handle_existing_image(self, driver, path):
+        driver.get(path)
+        self.wait_for_next_loop()
+
+    def wait_for_next_loop(self):
+        # noinspection PyBroadException
+        try:
             time.sleep(self.config.time_per_slide)
+        except:
+            print("Was the program terminated manually? - If so, don't worry about this log.")
+            sys.exit()
+
+    def handle_missing_image(self, path, site):
+        print('There was found no file with the path "' + path + '"')
+        skip_if_failed = self.jsonExt.extract(site, "skip_if_failed", True, "websites", self.is_first_run)
+        if skip_if_failed:
+            print('The website was configured as "skip_if_failed" and '
+                  'the website will therefore be skipped.')
+        else:
+            print('The website was configured as not "skip_if_failed" and '
+                  'the failure shall therefore cause termination of the program.')
+            sys.exit()
 
     def collect_screenshots(self, config, driver):
         websites = self.jsonExt.extract_with_failure(config, "websites", "config")
@@ -88,26 +116,38 @@ class Main:
             self.collect_snapshot(driver, site)
 
     def collect_snapshot(self, driver, site):
-        image_name = self.jsonExt.extract_with_failure(site, "image_name", "websites")
-        image_name_with_format = image_name + ".png"
-        site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
-        driver.get(site_url)
-        image_path = self.config.location + "/" + image_name_with_format
+        skip_if_failed = self.jsonExt.extract(site, "skip_if_failed", True, "websites", self.is_first_run)
+        # noinspection PyBroadException
+        try:
+            image_name = self.jsonExt.extract_with_failure(site, "image_name", "websites")
+            image_name_with_format = image_name + ".png"
+            site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
+            driver.get(site_url)
+            image_path = self.config.location + "/" + image_name_with_format
 
-        self.loginHandler.login(driver=driver,
-                                site=site,
-                                image_name=image_name,
-                                is_with_log=self.is_first_run)
+            self.loginHandler.login(driver=driver,
+                                    site=site,
+                                    image_name=image_name,
+                                    is_with_log=self.is_first_run)
 
-        self.navigationHandler.navigate(driver=driver,
-                                        site=site,
-                                        image_name=image_name,
-                                        image_path=image_path,
-                                        is_with_log=self.is_first_run)
+            self.navigationHandler.navigate(driver=driver,
+                                            site=site,
+                                            image_name=image_name,
+                                            image_path=image_path,
+                                            is_with_log=self.is_first_run)
 
-        self.captionHandler.add_caption(site=site,
-                                        image_path=image_path,
-                                        is_with_log=self.is_first_run)
+            self.captionHandler.add_caption(site=site,
+                                            image_path=image_path,
+                                            is_with_log=self.is_first_run)
+        except:
+            if skip_if_failed:
+                print('The website "' + image_name + '" failed due to an undefined error. '
+                                                     'The website will therefore be skipped.')
+            else:
+                print('The website "' + image_name + '" failed due to an undefined error. '
+                                                     'The website was configured as not "skip_if_failed" and '
+                                                     'the failure shall therefore cause termination of the program.')
+                sys.exit()
 
     def delete_old_files(self):
         location = self.config.location
