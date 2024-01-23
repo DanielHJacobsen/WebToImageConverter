@@ -1,5 +1,6 @@
 # Web-to-Image Converter #
 The Web-to-Image converter uses the config.json file to visit a website, navigates to a defined location, takes a screenshot and save the screenshot in the defined location.
+A repository ideal for a flexible dashboard slideshow.
 
 ## Configuration ##
 
