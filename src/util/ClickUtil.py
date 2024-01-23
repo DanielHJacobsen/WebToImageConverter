@@ -23,5 +23,5 @@ class ClickUtil:
             print('The CSS selector: "' + click_selector +
                   '" was not found within the configured '
                   '"allowed_timeout"-configuration ("' +
-                  Config().timeout + '" seconds).')
+                  str(Config().timeout) + '" seconds).')
             sys.exit()

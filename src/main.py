@@ -66,12 +66,14 @@ class Main:
         self.start_screenshot_collection_and_slideshow(config, driver)
 
     def run_slide_show(self, config, driver):
-
         for interation in range(self.config.refresh_interval):
-            self.loop_slide_show(config, driver)
+            self.loop_slide_show(config, driver, interation)
 
-    def loop_slide_show(self, config, driver):
+    def loop_slide_show(self, config, driver, interation):
         for site in config["websites"]:
+            if not self.is_screenshot_iteration(interation, site):
+                continue
+
             image_name_with_format = site["image_name"] + ".png"
             try:
                 path = self.config.location + "/" + image_name_with_format
@@ -87,11 +89,19 @@ class Main:
                 print("Was the program terminated manually? - If so, don't worry about this log.")
                 sys.exit()
 
+    def is_screenshot_iteration(self, interation, site):
+        show_for_every_x_iteration = self.jsonExt.extract(site,
+                                                          "show_for_every_x_interation",
+                                                          1,
+                                                          "websites",
+                                                          self.is_first_run)
+        return ((interation + 1) % show_for_every_x_iteration) == 0
+
     def handle_existing_image(self, driver, path):
         driver.get(path)
-        self.wait_for_next_loop()
+        self.timeout_on_screenshot()
 
-    def wait_for_next_loop(self):
+    def timeout_on_screenshot(self):
         # noinspection PyBroadException
         try:
             time.sleep(self.config.time_per_slide)
@@ -140,13 +150,12 @@ class Main:
                                             image_path=image_path,
                                             is_with_log=self.is_first_run)
         except:
+            print('The website "' + image_name + '" failed due to an undefined error.')
             if skip_if_failed:
-                print('The website "' + image_name + '" failed due to an undefined error. '
-                                                     'The website will therefore be skipped.')
+                print('The website will therefore be skipped.')
             else:
-                print('The website "' + image_name + '" failed due to an undefined error. '
-                                                     'The website was configured as not "skip_if_failed" and '
-                                                     'the failure shall therefore cause termination of the program.')
+                print('The website was configured as not "skip_if_failed" and '
+                      'the failure shall therefore cause termination of the program.')
                 sys.exit()
 
     def delete_old_files(self):

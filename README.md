@@ -11,6 +11,7 @@ All configurations of the Web-to-Image converter tool is done through a config.j
 * **"websites"** - [Array] An array of websites. Each website containing the following properties.
   * **"image_name"** - [String] Name of the image when save.
   * **"skip_if_failed"** - [Boolean] A boolean property, which configured if the program shall terminate if the image cannot be found. (default set to "true")
+  * **"show_for_every_x_interation"** - [Integer] A integer value to configure how often the screenshot in the loop-circuit shall be shown. (default set to 1 - hence every loop)
   * **"url"** - [String] URL to the website for each the screenshot shall be taken.
   * **"selector"** - [String] [Navigation 🔄] Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
   * **"scroll_to_selector"** - [Boolean] [Navigation 🔄] If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.

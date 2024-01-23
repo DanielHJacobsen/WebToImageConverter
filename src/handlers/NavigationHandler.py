@@ -39,7 +39,7 @@ class NavigationHandler:
                 print('The CSS selector: "' + click_selector +
                       '" was not found within the configured '
                       '"allowed_timeout"-configuration ("' +
-                      Config().timeout + '" seconds).')
+                      str(Config().timeout) + '" seconds).')
                 sys.exit()
 
         time.sleep(2)
@@ -63,5 +63,5 @@ class NavigationHandler:
             print('The CSS selector: "' + selector +
                   '" was not found within the configured '
                   '"allowed_timeout"-configuration ("' +
-                  Config().timeout + '" seconds).')
+                  str(Config().timeout) + '" seconds).')
             sys.exit()
