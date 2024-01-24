@@ -1,8 +1,13 @@
 # Web-to-Image Converter #
-The Web-to-Image converter uses the config.json file to visit a website, navigates to a defined location, takes a screenshot and save the screenshot in the defined location.
+The Web-to-Image converter uses the config.json file to visit a website, navigates to a defined location, takes a screenshot and save the screenshot in the defined location.\
 A repository ideal for a flexible dashboard slideshow.
 
 ## Configuration ##
+>**_The project includes an "example_config.json", which can be used as inspiration to create your own configuration.\
+\
+It will be necessary to create your own 'config.json'-file in the root of the repository in order to run the program.\
+\
+Your own configuration file is by default added to the gitignore-filter._**
 
 All configurations of the Web-to-Image converter tool is done through a config.json file in the same location as the tool script.
 * **"image_directory"** - [String] Directory for where to save the screenshots. It should be noted that the script does not create the directory if the path-location is not available.

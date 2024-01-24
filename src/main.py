@@ -40,7 +40,11 @@ class Main:
 
     @staticmethod
     def load_config_file():
-        file = open("../config.json")
+        try:
+            file = open("../config.json")
+        except FileNotFoundError:
+            print("No 'config.json' file was found in the root of the repository.")
+            sys.exit()
         try:
             config = json.load(file)
         except json.decoder.JSONDecodeError:
