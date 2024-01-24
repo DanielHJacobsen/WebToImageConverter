@@ -2,7 +2,6 @@ import sys
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchWindowException
-import json
 import os
 import time
 
@@ -12,6 +11,7 @@ from src.handlers.CaptionHandler import CaptionHandler
 from src.handlers.NavigationHandler import NavigationHandler
 from src.handlers.LoginHandler import LoginHandler
 from src.util.JsonExtraction import JsonExtraction
+from src.util.FileUtil import FileUtil
 
 
 class Main:
@@ -21,13 +21,14 @@ class Main:
     loginHandler = LoginHandler()
     jsonExt = JsonExtraction()
     config = Config()
+    fileUtil = FileUtil()
 
     def start(self):
         IntroPrint().print_ascii_art()
 
-        config_file = self.load_config_file()
+        config_file = FileUtil.load_config_file()
 
-        self.setup_configuration_util(config_file)
+        self.config.setup_configuration_util(config_file)
 
         self.delete_old_files()
 
@@ -37,31 +38,6 @@ class Main:
         driver.maximize_window()
 
         self.start_screenshot_collection_and_slideshow(config_file, driver)
-
-    @staticmethod
-    def load_config_file():
-        try:
-            file = open("../config.json")
-        except FileNotFoundError:
-            print("No 'config.json' file was found in the root of the repository.")
-            sys.exit()
-        try:
-            config = json.load(file)
-        except json.decoder.JSONDecodeError:
-            print("Syntax issues found in the config.json file.")
-            sys.exit()
-        return config
-
-    def setup_configuration_util(self, config_file):
-        location = self.jsonExt.extract_with_failure(config_file, "image_directory", "config_file")
-        timeout = self.jsonExt.extract(config_file, "allowed_timeout", 5, "config_file", True)
-        refresh_interval = self.jsonExt.extract(config_file, "refresh_interval", 5, "refresh_interval", True)
-        time_per_slide = self.jsonExt.extract(config_file, "time_per_slide", 5, "time_per_slide", True)
-
-        self.config.location = location
-        self.config.timeout = timeout
-        self.config.time_per_slide = time_per_slide
-        self.config.refresh_interval = refresh_interval
 
     def start_screenshot_collection_and_slideshow(self, config, driver):
         self.collect_screenshots(config, driver)
@@ -84,7 +60,7 @@ class Main:
                 file_exits = os.path.exists(path)
 
                 if file_exits:
-                    self.handle_existing_image(driver, path)
+                    self.handle_existing_image(driver, path, site)
                 else:
                     self.handle_missing_image(path, site)
 
@@ -101,17 +77,31 @@ class Main:
                                                           self.is_first_run)
         return ((interation + 1) % show_for_every_x_iteration) == 0
 
-    def handle_existing_image(self, driver, path):
+    def handle_existing_image(self, driver, path, site):
         driver.get(path)
-        self.timeout_on_screenshot()
+        self.timeout_on_screenshot(site)
 
-    def timeout_on_screenshot(self):
+    def timeout_on_screenshot(self, site):
         # noinspection PyBroadException
         try:
-            time.sleep(self.config.time_per_slide)
+            time.sleep(self.get_time_on_slide(site))
         except:
             print("Was the program terminated manually? - If so, don't worry about this log.")
             sys.exit()
+
+    def get_time_on_slide(self, site):
+        time_for_slide_override = self.jsonExt.extract(
+            site,
+            "time_for_slide_override",
+            0,
+            "websites",
+            self.is_first_run
+        )
+        if not time_for_slide_override == 0:
+            time_on_slide = time_for_slide_override
+        else:
+            time_on_slide = self.config.time_per_slide
+        return time_on_slide
 
     def handle_missing_image(self, path, site):
         print('There was found no file with the path "' + path + '"')

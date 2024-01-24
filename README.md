@@ -22,6 +22,7 @@ All configurations of the Web-to-Image converter tool is done through a config.j
   * **"selector"** - [String] [Navigation 🔄] Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
   * **"scroll_to_selector"** - [Boolean] [Navigation 🔄] If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.
   * **"clicks"** - [Array of Strings] [Navigation 🔄] Sets an array of CSS selectors, which will be clicked before taking the screenshot.*
+  * **"time_for_slide_override"** - [Integer] An integer-property used to override the default time per slide for this specific screenshot. The default time is set by the 'time_per_slide'-property.*
   * **"captions"** - [Array] [Caption 🆎] Sets an array of captions-objects, which contains all the "Caption"-information found below.
     * **"caption_text"** - [String] [Caption 🆎] Caption text can be used to add a text message to the screenshot.
     * **"caption_x"** - [Integer] [Caption 🆎] Sets the x-axis position of the captions on the screenshot. Requires the "caption"-property to be set.

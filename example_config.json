@@ -9,6 +9,7 @@
       "url": "https://www.jetbrains.com/teamcity/img/screenshots/projects-overview.png",
       "skip_if_failed": true,
       "show_for_every_x_interation": 5,
+      "time_for_slide_override": 10,
       "captions": [
         {
           "caption_text": "The pipeline should always be GREEN. \nIf a build configuration is RED, it needs to be investigated.",
