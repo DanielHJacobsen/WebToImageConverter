@@ -12,12 +12,14 @@ from src.handlers.NavigationHandler import NavigationHandler
 from src.handlers.LoginHandler import LoginHandler
 from src.util.JsonExtraction import JsonExtraction
 from src.util.FileUtil import FileUtil
+from src.util.GifUtil import GifUtil
 
 
 class Main:
     is_first_run = True
     captionHandler = CaptionHandler()
     navigationHandler = NavigationHandler()
+    gifUtil = GifUtil()
     loginHandler = LoginHandler()
     jsonExt = JsonExtraction()
     config = Config()
@@ -54,7 +56,7 @@ class Main:
             if not self.is_screenshot_iteration(interation, site):
                 continue
 
-            image_name_with_format = site["image_name"] + ".png"
+            image_name_with_format = site["image_name"] + self.get_file_format(site)
             try:
                 path = self.config.location + "/" + image_name_with_format
                 file_exits = os.path.exists(path)
@@ -124,7 +126,7 @@ class Main:
         # noinspection PyBroadException
         try:
             image_name = self.jsonExt.extract_with_failure(site, "image_name", "websites")
-            image_name_with_format = image_name + ".png"
+            image_name_with_format = image_name + self.get_file_format(site)
             site_url = self.jsonExt.extract_with_failure(site, "url", image_name)
             driver.get(site_url)
             image_path = self.config.location + "/" + image_name_with_format
@@ -134,15 +136,20 @@ class Main:
                                     image_name=image_name,
                                     is_with_log=self.is_first_run)
 
-            self.navigationHandler.navigate(driver=driver,
-                                            site=site,
-                                            image_name=image_name,
-                                            image_path=image_path,
-                                            is_with_log=self.is_first_run)
+            if site_url.endswith(".png") or site_url.endswith(".gif"):
+                self.gifUtil.download_gif_from_url(site=site, is_first_run=self.is_first_run)
 
-            self.captionHandler.add_caption(site=site,
-                                            image_path=image_path,
-                                            is_with_log=self.is_first_run)
+            else:
+                self.navigationHandler.navigate(driver=driver,
+                                                site=site,
+                                                image_name=image_name,
+                                                image_path=image_path,
+                                                is_with_log=self.is_first_run)
+
+                self.captionHandler.add_caption(site=site,
+                                                image_path=image_path,
+                                                is_with_log=self.is_first_run)
+
         except:
             print('The website "' + image_name + '" failed due to an undefined error.')
             if skip_if_failed:
@@ -152,11 +159,21 @@ class Main:
                       'the failure shall therefore cause termination of the program.')
                 sys.exit()
 
+    def get_file_format(self, site):
+        url = self.jsonExt.extract_with_failure(site, "url", "websites")
+        if url.endswith(".gif"):
+            file_format = ".gif"
+        else:
+            file_format = ".png"
+        return file_format
+
     def delete_old_files(self):
         location = self.config.location
 
         for filename in os.listdir(location):
-            if os.path.isfile(os.path.join(location, filename)) and filename.endswith(".png"):
+            if (os.path.isfile(os.path.join(location, filename)) and
+                    (filename.endswith(".png") or filename.endswith(".gif"))):
+
                 os.remove(os.path.join(location, filename))
 
 
