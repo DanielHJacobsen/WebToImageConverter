@@ -136,7 +136,7 @@ class Main:
                                     image_name=image_name,
                                     is_with_log=self.is_first_run)
 
-            if site_url.endswith(".png") or site_url.endswith(".gif"):
+            if site_url.endswith(".png") or site_url.endswith(".gif") or site_url.endswith(".jpeg"):
                 self.gifUtil.download_gif_from_url(site=site, is_first_run=self.is_first_run)
 
             else:
@@ -163,8 +163,14 @@ class Main:
         url = self.jsonExt.extract_with_failure(site, "url", "websites")
         if url.endswith(".gif"):
             file_format = ".gif"
-        else:
+        elif url.endswith(".png"):
             file_format = ".png"
+        elif url.endswith(".jpeg"):
+            file_format = ".jpeg"
+        else:
+            print("Unsupported file format of the URL: " + url)
+            sys.exit()
+
         return file_format
 
     def delete_old_files(self):
