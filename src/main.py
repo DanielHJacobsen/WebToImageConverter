@@ -168,8 +168,7 @@ class Main:
         elif url.endswith(".jpeg"):
             file_format = ".jpeg"
         else:
-            print("Unsupported file format of the URL: " + url)
-            sys.exit()
+            file_format = ".png"
 
         return file_format
 
