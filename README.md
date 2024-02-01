@@ -18,7 +18,7 @@ All configurations of the Web-to-Image converter tool is done through a config.j
   * **"image_name"** - [String] Name of the image when save.
   * **"skip_if_failed"** - [Boolean] A boolean property, which configured if the program shall terminate if the image cannot be found. (default set to "true")
   * **"show_for_every_x_interation"** - [Integer] A integer value to configure how often the screenshot in the loop-circuit shall be shown. (default set to 1 - hence every loop)
-  * **"url"** - [String] URL to the website for each the screenshot shall be taken.
+  * **"url"** - [String] URL to the website for each the screenshot shall be taken. If the 'URL'-property leads to a GIF-, JPEG- or PNG-file, it will not be possible to use the 'credential'-configuration.
   * **"selector"** - [String] [Navigation 🔄] Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
   * **"scroll_to_selector"** - [Boolean] [Navigation 🔄] If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.
   * **"clicks"** - [Array of Strings] [Navigation 🔄] Sets an array of CSS selectors, which will be clicked before taking the screenshot.*
@@ -29,7 +29,7 @@ All configurations of the Web-to-Image converter tool is done through a config.j
     * **"caption_y"** - [Integer] [Caption 🆎] Sets the y-axis position of the captions on the screenshot. Requires the "caption"-property to be set.
     * **"caption_color"** - [String] [Caption 🆎] Sets the font color of the captions on the screenshot. Requires the "caption"-property to be set.
     * **"caption_size"** - [Integer] [Caption 🆎] Sets the font size of the captions on the screenshot. Requires the "caption"-property to be set.
-  * **"credentials"** - [Array] [Credentials 🔐] The credentials sections can be used to add login credentials to the screenshot collector. This can be useful if the desired view is secured my an authentication stage. E.g. Account for pipeline monitoring. 
+  * **"credentials"** - [Array] [Credentials 🔐] The credentials sections can be used to add login credentials to the screenshot collector. This can be useful if the desired view is secured my an authentication stage. E.g. Account for pipeline monitoring. If the 'URL'-property leads to a GIF-, JPEG- or PNG-file, it will not be possible to use the 'credential'-configuration.
     * **"username"** - [String] [Credentials 🔐] Sets the username for the login.
     * **"username_selector"** - [String] [Credentials 🔐] Sets the CSS selector in which the username can be inserted. Aim for input-tag.
     * **"password"** - [String] [Credentials 🔐] Sets the password for the login.

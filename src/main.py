@@ -131,15 +131,15 @@ class Main:
             driver.get(site_url)
             image_path = self.config.location + "/" + image_name_with_format
 
-            self.loginHandler.login(driver=driver,
-                                    site=site,
-                                    image_name=image_name,
-                                    is_with_log=self.is_first_run)
-
             if site_url.endswith(".png") or site_url.endswith(".gif") or site_url.endswith(".jpeg"):
                 self.gifUtil.download_gif_from_url(site=site, is_first_run=self.is_first_run)
 
             else:
+                self.loginHandler.login(driver=driver,
+                                        site=site,
+                                        image_name=image_name,
+                                        is_with_log=self.is_first_run)
+
                 self.navigationHandler.navigate(driver=driver,
                                                 site=site,
                                                 image_name=image_name,
