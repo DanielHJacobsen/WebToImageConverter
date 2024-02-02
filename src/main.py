@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchWindowException
 import os
 import time
+from threading import Thread
 
 from util.Config import Config
 from util.IntroUtil import IntroPrint
@@ -34,27 +35,43 @@ class Main:
 
         self.delete_old_files()
 
+        driver_collector = self.create_driver()
+        driver_slideshow = self.create_driver()
+
+        self.start_screenshot_collection_and_slideshow(config_file, driver_collector, driver_slideshow)
+
+    @staticmethod
+    def create_driver():
         driver = webdriver.Chrome()
-        driver.maximize_window()
         driver.fullscreen_window()
         driver.maximize_window()
+        return driver
 
-        self.start_screenshot_collection_and_slideshow(config_file, driver)
+    def start_screenshot_collection_and_slideshow(self, config, driver_collector, driver_slideshow):
+        thread_collector = Thread(target=self.loop_collection, args=(config, driver_collector))
+        thread_collector.start()
 
-    def start_screenshot_collection_and_slideshow(self, config, driver):
-        self.collect_screenshots(config, driver)
-        self.run_slide_show(config, driver)
+        self.show_loading_screen(driver_slideshow)
+
+        thread_slideshow = Thread(target=self.loop_slide_show, args=(config, driver_slideshow))
+        thread_slideshow.start()
+
+    @staticmethod
+    def show_loading_screen(driver_slideshow):
+        path_to_loading = os.getcwd().replace("src", "") + "resources\\Loading.gif"
+        driver_slideshow.get(path_to_loading)
+        time.sleep(9)
+
+    def loop_collection(self, config, driver_collector):
+        self.collect_screenshots(config, driver_collector)
         self.is_first_run = False
-        self.start_screenshot_collection_and_slideshow(config, driver)
+        path_to_loading = os.getcwd().replace("src", "") + "resources\\CollectorOnHold.png"
+        driver_collector.get(path_to_loading)
+        time.sleep(60)
+        self.loop_collection(config, driver_collector)
 
-    def run_slide_show(self, config, driver):
-        for interation in range(self.config.refresh_interval):
-            self.loop_slide_show(config, driver, interation)
-
-    def loop_slide_show(self, config, driver, interation):
+    def loop_slide_show(self, config, driver):
         for site in config["websites"]:
-            if not self.is_screenshot_iteration(interation, site):
-                continue
 
             image_name_with_format = site["image_name"] + self.get_file_format(site)
             try:
@@ -70,14 +87,7 @@ class Main:
                 print(e.msg)
                 print("Was the program terminated manually? - If so, don't worry about this log.")
                 sys.exit()
-
-    def is_screenshot_iteration(self, interation, site):
-        show_for_every_x_iteration = self.jsonExt.extract(site,
-                                                          "show_for_every_x_interation",
-                                                          1,
-                                                          "websites",
-                                                          self.is_first_run)
-        return ((interation + 1) % show_for_every_x_iteration) == 0
+        self.loop_slide_show(config, driver)
 
     def handle_existing_image(self, driver, path, site):
         driver.get(path)
@@ -150,7 +160,12 @@ class Main:
                                                 image_path=image_path,
                                                 is_with_log=self.is_first_run)
 
-        except:
+        except NoSuchWindowException:
+            print('The website "' + image_name + '" failed due to an NoSuchWindowException.'
+                  'This is likely cause by manually closing the browser window while the program is still running.')
+            sys.exit()
+
+        except Exception as e:
             print('The website "' + image_name + '" failed due to an undefined error.')
             if skip_if_failed:
                 print('The website will therefore be skipped.')

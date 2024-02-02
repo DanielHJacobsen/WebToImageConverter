@@ -19,12 +19,10 @@ Your own configuration file is by default added to the gitignore-filter._**
 All configurations of the Web-to-Image converter tool is done through a config.json file in the same location as the tool script.
 * **"image_directory"** - [String] Directory for where to save the screenshots. It should be noted that the script does not create the directory if the path-location is not available.
 * **"time_per_slide"** - [Integer] The time paused on each slide. (default 5 sec)
-* **"refresh_interval"** - [Integer] The number of rotations which the slide show will continue before refreshing all the images collected. (default 5)
 * **"allowed_timeout"** - [Integer] The allowed time delay for a CSS selector to wait until the application will fail due to missing selector. (default 5 sec)
 * **"websites"** - [Array] An array of websites. Each website containing the following properties.
   * **"image_name"** - [String] Name of the image when save.
   * **"skip_if_failed"** - [Boolean] A boolean property, which configured if the program shall terminate if the image cannot be found. (default set to "true")
-  * **"show_for_every_x_interation"** - [Integer] A integer value to configure how often the screenshot in the loop-circuit shall be shown. (default set to 1 - hence every loop)
   * **"url"** - [String] URL to the website for each the screenshot shall be taken. If the 'URL'-property leads to a GIF-, JPEG- or PNG-file, it will not be possible to use the 'credential'-configuration.
   * **"selector"** - [String] [Navigation 🔄] Used to provide an HTML selector, which the tool will focus and resize the screenshot according to.
   * **"scroll_to_selector"** - [Boolean] [Navigation 🔄] If this property is set to true, the "selector"-property is used as a point to scroll to. Otherwise, the selector will be used as described in its own description.
