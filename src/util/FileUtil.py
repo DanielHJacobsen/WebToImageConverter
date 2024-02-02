@@ -9,7 +9,8 @@ class FileUtil:
         try:
             file = open("../config.json")
         except FileNotFoundError:
-            print("No 'config.json' file was found in the root of the repository.")
+            print("No 'config.json' file was found in the root of the repository. "
+                  "Working directory of the script is intended to be the 'src'-directory.")
             sys.exit()
         try:
             # noinspection PyUnboundLocalVariable

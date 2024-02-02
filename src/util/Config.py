@@ -1,4 +1,4 @@
-from src.util.JsonExtraction import JsonExtraction
+from util.JsonExtraction import JsonExtraction
 
 
 class Config(object):

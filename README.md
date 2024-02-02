@@ -2,6 +2,13 @@
 The Web-to-Image converter uses the config.json file to visit a website, navigates to a defined location, takes a screenshot and save the screenshot in the defined location.\
 A repository ideal for a flexible dashboard slideshow.
 
+## How to get started ##
+1. Download all required dependencies:\
+`pip install -r requirements.txt`
+2. Create and configure your own `config.json` file in the root of the project (see Configuration-section).
+3. Start the script. Working directory of the script is intended to be the 'src'-directory. \
+`python main.py`
+
 ## Configuration ##
 >**_The project includes an "example_config.json", which can be used as inspiration to create your own configuration.\
 \

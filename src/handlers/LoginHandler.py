@@ -1,6 +1,6 @@
-from ..util.Config import Config
-from ..util.JsonExtraction import JsonExtraction as jsonExt
-from ..util.ClickUtil import ClickUtil
+from util.Config import Config
+from util.JsonExtraction import JsonExtraction as jsonExt
+from util.ClickUtil import ClickUtil
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.common.by import By

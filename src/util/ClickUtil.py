@@ -5,7 +5,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
-from src.util.Config import Config
+from util.Config import Config
 
 
 class ClickUtil:

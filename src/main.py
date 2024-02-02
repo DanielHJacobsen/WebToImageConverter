@@ -5,14 +5,14 @@ from selenium.common.exceptions import NoSuchWindowException
 import os
 import time
 
-from src.util.Config import Config
-from src.util.IntroUtil import IntroPrint
-from src.handlers.CaptionHandler import CaptionHandler
-from src.handlers.NavigationHandler import NavigationHandler
-from src.handlers.LoginHandler import LoginHandler
-from src.util.JsonExtraction import JsonExtraction
-from src.util.FileUtil import FileUtil
-from src.util.GifUtil import GifUtil
+from util.Config import Config
+from util.IntroUtil import IntroPrint
+from util.JsonExtraction import JsonExtraction
+from util.FileUtil import FileUtil
+from util.GifUtil import GifUtil
+from handlers.CaptionHandler import CaptionHandler
+from handlers.NavigationHandler import NavigationHandler
+from handlers.LoginHandler import LoginHandler
 
 
 class Main:

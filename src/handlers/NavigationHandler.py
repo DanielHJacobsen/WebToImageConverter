@@ -4,11 +4,11 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.common.exceptions import TimeoutException
-
-from ..util.Config import Config
-from ..util.JsonExtraction import JsonExtraction as jsonExt
 from selenium.webdriver.support.wait import WebDriverWait
-from ..util.ClickUtil import ClickUtil
+
+from util.Config import Config
+from util.JsonExtraction import JsonExtraction as jsonExt
+from util.ClickUtil import ClickUtil
 
 
 class NavigationHandler:

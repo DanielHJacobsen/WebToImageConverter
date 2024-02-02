@@ -1,7 +1,7 @@
 import sys
 import requests
-from src.util.JsonExtraction import JsonExtraction
-from src.util.Config import Config
+from util.JsonExtraction import JsonExtraction
+from util.Config import Config
 
 
 class GifUtil:
