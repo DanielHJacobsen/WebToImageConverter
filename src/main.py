@@ -65,6 +65,7 @@ class Main:
             if self.is_empty(self.config.location):
                 print("Attempt number: " + str(attempt) + " failed to find any files in configuration directory "
                                                           "of image storage location: " + path_to_loading)
+                # 9 seconds matches the duration of the "loading" GIF.
                 time.sleep(9)
             else:
                 break
