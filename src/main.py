@@ -56,11 +56,30 @@ class Main:
         thread_slideshow = Thread(target=self.loop_slide_show, args=(config, driver_slideshow))
         thread_slideshow.start()
 
-    @staticmethod
-    def show_loading_screen(driver_slideshow):
+    def show_loading_screen(self, driver_slideshow):
         path_to_loading = os.getcwd().replace("src", "") + "resources\\Loading.gif"
         driver_slideshow.get(path_to_loading)
-        time.sleep(9)
+
+        number_of_attempts = range(5)
+        for attempt in number_of_attempts:
+            if self.is_empty(self.config.location):
+                print("Attempt number: " + str(attempt) + " failed to find any files in configuration directory "
+                                                          "of image storage location: " + path_to_loading)
+                time.sleep(9)
+            else:
+                break
+
+    @staticmethod
+    def is_empty(path):
+        if os.path.exists(path) and not os.path.isfile(path):
+
+            if not os.listdir(path):
+                return True
+            else:
+                return False
+        else:
+            print("It was not possible to find the directory of the configured image storage location: " + path)
+            return False
 
     def loop_collection(self, config, driver_collector):
         self.collect_screenshots(config, driver_collector)
