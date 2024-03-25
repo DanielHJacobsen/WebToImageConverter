@@ -1,11 +1,11 @@
 import sys
-
+from pynput import keyboard
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchWindowException
 import os
 import time
 from threading import Thread
-
 from util.Config import Config
 from util.IntroUtil import IntroPrint
 from util.JsonExtraction import JsonExtraction
@@ -25,26 +25,44 @@ class Main:
     jsonExt = JsonExtraction()
     config = Config()
     fileUtil = FileUtil()
+    stopThreads = False
+
+    def on_press(self, key):
+        print(key)
+        if keyboard.Key.esc:
+            print("The program was manually terminated by pressing ESC.")
+            self.stopThreads = True
+            sys.exit()
 
     def start(self):
-        IntroPrint().print_ascii_art()
+        with keyboard.Listener(on_press=self.on_press) as listener:
 
-        config_file = FileUtil.load_config_file()
+            IntroPrint().print_ascii_art()
 
-        self.config.setup_configuration_util(config_file)
+            config_file = FileUtil.load_config_file()
 
-        self.delete_old_files()
+            self.config.setup_configuration_util(config_file)
 
-        driver_collector = self.create_driver()
-        driver_slideshow = self.create_driver()
+            self.delete_old_files()
 
-        self.start_screenshot_collection_and_slideshow(config_file, driver_collector, driver_slideshow)
+            driver_slideshow = self.create_driver(False)
+
+            window_size = driver_slideshow.get_window_size()
+            driver_collector = self.create_driver(True, window_size.get("width"), window_size.get("height"))
+
+            self.start_screenshot_collection_and_slideshow(config_file, driver_collector, driver_slideshow)
 
     @staticmethod
-    def create_driver():
-        driver = webdriver.Chrome()
+    def create_driver(is_headless, width=None, height=None):
+        options = Options()
+        if is_headless:
+            options.add_argument("--headless")
+            options.add_argument("--disable_gpu")
+        driver = webdriver.Chrome(options=options)
         driver.fullscreen_window()
         driver.maximize_window()
+        if width is not None and height is not None:
+            driver.set_window_size(width, height)
         return driver
 
     def start_screenshot_collection_and_slideshow(self, config, driver_collector, driver_slideshow):
@@ -83,18 +101,24 @@ class Main:
             return False
 
     def loop_collection(self, config, driver_collector):
+        if self.stopThreads:
+            print("Collection thread has been ended.")
+            return
         self.collect_screenshots(config, driver_collector)
         self.is_first_run = False
         path_to_loading = os.getcwd().replace("src", "") + "resources\\CollectorOnHold.png"
         driver_collector.get(path_to_loading)
-        time.sleep(60)
+        time.sleep(5)
         self.loop_collection(config, driver_collector)
 
     def loop_slide_show(self, config, driver):
-        for site in config["websites"]:
+        if self.stopThreads:
+            print("Slideshow thread has been ended.")
+            return
+        try:
+            for site in config["websites"]:
 
-            image_name_with_format = site["image_name"] + self.get_file_format(site)
-            try:
+                image_name_with_format = site["image_name"] + self.get_file_format(site)
                 path = self.config.location + "/" + image_name_with_format
                 file_exits = os.path.exists(path)
 
@@ -103,11 +127,12 @@ class Main:
                 else:
                     self.handle_missing_image(path, site)
 
-            except NoSuchWindowException as e:
-                print(e.msg)
-                print("Was the program terminated manually? - If so, don't worry about this log.")
-                sys.exit()
-        self.loop_slide_show(config, driver)
+                self.loop_slide_show(config, driver)
+
+        except NoSuchWindowException as e:
+            print(e.msg)
+            print("Was the program terminated manually? - If so, don't worry about this log.")
+            sys.exit()
 
     def handle_existing_image(self, driver, path, site):
         driver.get(path)
@@ -218,4 +243,8 @@ class Main:
 
 
 if __name__ == "__main__":
-    Main().start()
+    try:
+        Main().start()
+    except KeyboardInterrupt as e:
+        print("Was the program terminated manually? - If so, don't worry about this log.")
+        sys.exit()
