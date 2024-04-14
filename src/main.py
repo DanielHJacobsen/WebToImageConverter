@@ -28,8 +28,7 @@ class Main:
     stopThreads = False
 
     def on_press(self, key):
-        print(key)
-        if keyboard.Key.esc:
+        if keyboard.Key.esc == key:
             print("The program was manually terminated by pressing ESC.")
             self.stopThreads = True
             sys.exit()
@@ -82,7 +81,7 @@ class Main:
         for attempt in number_of_attempts:
             if self.is_empty(self.config.location):
                 print("Attempt number: " + str(attempt) + " failed to find any files in configuration directory "
-                                                          "of image storage location: " + path_to_loading)
+                                                          "of image storage location: " + self.config.location)
                 # 9 seconds matches the duration of the "loading" GIF.
                 time.sleep(9)
             else:
@@ -127,7 +126,7 @@ class Main:
                 else:
                     self.handle_missing_image(path, site)
 
-                self.loop_slide_show(config, driver)
+            self.loop_slide_show(config, driver)
 
         except NoSuchWindowException as e:
             print(e.msg)
